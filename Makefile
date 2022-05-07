@@ -33,9 +33,9 @@ lint: ## Lints the entire project
 	golangci-lint -c .golangci.yaml run
 .PHONY: lint
 
-bin: tidy ## Builds CLI binary
+release: tidy ## Builds CLI binary
 	goreleaser release --snapshot --rm-dist --timeout 10m0s
-.PHONY: bin
+.PHONY: release
 
 tag: ## Creates release tag 
 	git tag $(RELEASE_VERSION)
