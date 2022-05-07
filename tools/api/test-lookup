@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -u
+set -e
+
+curl -s -X GET -H "Accept: application/json" \
+	http://127.0.0.1:8080/api/v1/lookup/category?token=$(cat configs/dev.token)
+
+curl -s -X GET -H "Accept: application/json" \
+	http://127.0.0.1:8080/api/v1/lookup/author/10?token=$(cat configs/dev.token)
+
+curl -s -X GET -H "Accept: application/json" \
+	http://127.0.0.1:8080/api/v1/lookup/token/10?token=$(cat configs/dev.token)
+
+curl -s -X GET -H "Accept: application/json" \
+	http://127.0.0.1:8080/api/v1/lookup/story/10?token=$(cat configs/dev.token)

@@ -1,0 +1,11 @@
+{
+    "categories": ["/Finance/Investing/Currencies & Foreign Exchange"],
+    "tokens": ["want", "also"],
+    "min_score": 200,
+    "min_comments": 1,
+    "negative": true,
+    "positive": true,
+    "from_time": 1649744010,
+    "author": "benbreen",
+    "max_results": 2
+}

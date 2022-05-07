@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -u
+set -e
+
+# input 
+STORY_ID=$1
+
+# data (1:top, 2:latest)
+DATA_TS=$(date +%s)
+DATA_JSON='{"id": '$STORY_ID', "created": '$DATA_TS', "story_type": "top"}'
+printf '%s\n' "$DATA_JSON"
+
+DATA_B64=$(echo -ne "$DATA_JSON" | base64);
+# printf '%s\n' "$DATA_B64"
+
+# message
+MSG_JSON='{"message": {"attributes": {"key": "value"},"data": "'$DATA_B64'","messageId": "2070443601311540","publishTime": "2021-02-26T19:13:55.749Z"},"subscription": "projects/test/subscriptions/sub"}'
+# printf '%s\n' "$MSG_JSON"
+
+curl -i \
+     -H "Accept: application/json" \
+     -d "$MSG_JSON" \
+	 http://127.0.0.1:8080/api/v1/process?token=$(cat configs/dev.token)
