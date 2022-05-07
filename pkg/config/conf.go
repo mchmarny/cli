@@ -4,6 +4,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/pkg/errors"
@@ -13,6 +14,8 @@ import (
 
 const (
 	configFileName = "config.yaml"
+	dirMode        = 0700
+	fileMode       = 0600
 )
 
 // Config represents app config object.
@@ -44,7 +47,7 @@ func Save(dirPath string, c *Config) error {
 		return errors.Wrap(err, "failed to marshal config")
 	}
 	path := filepath.Join(dirPath, configFileName)
-	if err := os.WriteFile(path, b, os.ModePerm); err != nil {
+	if err := os.WriteFile(path, b, fileMode); err != nil {
 		return errors.Wrapf(err, "failed to write config file: %s", configFileName)
 	}
 	return nil
@@ -89,6 +92,10 @@ func GetOrCreateHomeDir(name string) (path string, created bool, err error) {
 		return "", false, errors.New("name cannot be empty")
 	}
 
+	if !strings.HasPrefix(name, ".") {
+		name = "." + name
+	}
+
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", false, errors.Wrap(err, "failed to get user home dir")
@@ -98,7 +105,7 @@ func GetOrCreateHomeDir(name string) (path string, created bool, err error) {
 	dir := filepath.Join(home, name)
 	if _, err := os.Stat(dir); errors.Is(err, os.ErrNotExist) {
 		log.Debug().Msgf("creating dir: %s", dir)
-		err := os.Mkdir(dir, os.ModePerm)
+		err := os.Mkdir(dir, dirMode)
 		if err != nil {
 			return "", false, errors.Wrapf(err, "failed to create dir: %s", dir)
 		}
