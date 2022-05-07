@@ -1,17 +1,18 @@
 package data
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/pkg/errors"
 )
 
-func SaveBatch(ids []int64) error {
+func SaveAll(ids []int64) error {
 	if db == nil {
 		return errors.New("database not initialized")
 	}
 
-	stmt, err := db.Prepare("INSERT INTO sample (id, date) VALUES (?, ?")
+	stmt, err := db.Prepare("INSERT INTO sample (id, val) VALUES (?, ?)")
 	if err != nil {
 		return errors.Wrapf(err, "failed to prepare batch statement")
 	}
@@ -22,7 +23,8 @@ func SaveBatch(ids []int64) error {
 	}
 
 	for _, id := range ids {
-		_, err = tx.Stmt(stmt).Exec(id, time.Now().UTC().Unix())
+		val := fmt.Sprintf("%d", time.Now().UTC().Unix())
+		_, err = tx.Stmt(stmt).Exec(id, val)
 		if err != nil {
 			if err = tx.Rollback(); err != nil {
 				return errors.Wrapf(err, "failed to rollback transaction")

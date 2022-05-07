@@ -59,6 +59,13 @@ func ReadOrCreate(dirPath string) (*Config, error) {
 		return nil, errors.New("config directory required")
 	}
 
+	if _, err := os.Stat(dirPath); errors.Is(err, os.ErrNotExist) {
+		err := os.Mkdir(dirPath, dirMode)
+		if err != nil {
+			return nil, errors.Wrapf(err, "failed to create dir: %s", dirPath)
+		}
+	}
+
 	path := filepath.Join(dirPath, configFileName)
 
 	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
