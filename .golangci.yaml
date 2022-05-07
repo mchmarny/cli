@@ -73,8 +73,8 @@ linters:
 
 issues:
   exclude:
-    - G404
-    - G101
+    # - G404
+    # - G101
 
   # exclude-rules:
   #   - path: cmd/app/oauth.go

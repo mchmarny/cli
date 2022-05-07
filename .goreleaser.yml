@@ -1,4 +1,4 @@
-project_name: twee
+project_name: cli
 
 before:
   hooks:
@@ -21,7 +21,7 @@ builds:
 release:
   github:
     owner: mchmarny
-    name: followme
+    name: cli
   prerelease: auto
 
 archives:

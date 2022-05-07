@@ -18,8 +18,12 @@ upgrade: ## Upgrades all dependancies
 .PHONY: upgrade
 
 test: tidy ## Runs unit tests
-		go test -short -count=1 -race -covermode=atomic -coverprofile=cover.out ./...
+		go test -count=1 -race -covermode=atomic -coverprofile=cover.out ./...
 .PHONY: test
+
+run: tidy ## Runs uncompiled version of the app
+	go run cmd/cli/*.go
+.PHONY: run
 
 cover: test ## Runs unit tests and putputs coverage
 	go tool cover -func=cover.out

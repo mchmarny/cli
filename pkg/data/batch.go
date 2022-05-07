@@ -1,31 +1,39 @@
 package data
 
 import (
-	"fmt"
+	"time"
 
 	"github.com/pkg/errors"
 )
 
-func (s *Service) SaveBatch(ids []int64) error {
-	stmt, err := s.db.Prepare("update task set is_deleted='Y',last_modified_at=datetime() where id=?")
-	if err != nil {
-		return errors.Wrapf(err, "failed to prepare statement")
+func SaveBatch(ids []int64) error {
+	if db == nil {
+		return errors.New("database not initialized")
 	}
 
-	tx, err := s.db.Begin()
+	stmt, err := db.Prepare("INSERT INTO sample (id, date) VALUES (?, ?")
+	if err != nil {
+		return errors.Wrapf(err, "failed to prepare batch statement")
+	}
+
+	tx, err := db.Begin()
 	if err != nil {
 		return errors.Wrapf(err, "failed to begin transaction")
 	}
 
 	for _, id := range ids {
-		_, err = tx.Stmt(stmt).Exec(id)
+		_, err = tx.Stmt(stmt).Exec(id, time.Now().UTC().Unix())
+		if err != nil {
+			if err = tx.Rollback(); err != nil {
+				return errors.Wrapf(err, "failed to rollback transaction")
+			}
+			return errors.Wrapf(err, "failed to execute batch statement")
+		}
 	}
 
-	if err != nil {
-		fmt.Println("doing rollback")
-		tx.Rollback()
-	} else {
-		tx.Commit()
+	if err = tx.Commit(); err != nil {
+		return errors.Wrapf(err, "failed to commit transaction")
 	}
+
 	return nil
 }

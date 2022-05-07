@@ -5,7 +5,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/mchmarny/twcli/pkg/config"
+	"github.com/mchmarny/cli/pkg/config"
+	"github.com/mchmarny/cli/pkg/data"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
@@ -19,7 +20,7 @@ const (
 var (
 	version = "v0.0.1-default"
 
-	cfg *config.AppConfig
+	cfg *config.Config
 )
 
 func main() {
@@ -30,10 +31,16 @@ func main() {
 	log.Debug().Msgf("home dir (created: %v): %s", created, homeDir)
 
 	cfg, err = config.ReadOrCreate(homeDir)
+	fatalErr(err)
+
+	if err = data.Init(homeDir); err != nil {
+		fatalErr(err)
+	}
+	defer data.Close()
 
 	app := &cli.App{
 		Name:     "twee",
-		Version:  fmt.Sprintf("%s", version),
+		Version:  fmt.Sprintf("%s - %s", version, cfg.Value),
 		Compiled: time.Now(),
 		Usage:    "cli",
 		Commands: []cli.Command{
