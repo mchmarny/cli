@@ -2,6 +2,7 @@ package data
 
 import (
 	"database/sql"
+	"embed"
 	"os"
 	"path/filepath"
 
@@ -16,6 +17,9 @@ const (
 
 var (
 	db *sql.DB
+
+	//go:embed sql/*
+	f embed.FS
 )
 
 // New initializes the database for a given name.
@@ -41,7 +45,12 @@ func Init(dir string) error {
 
 	if wasCreated {
 		log.Debug().Msg("creating schema...")
-		if _, err := db.Exec(ddl); err != nil {
+
+		b, err := f.ReadFile("sql/ddl.sql")
+		if err != nil {
+			return errors.Wrap(err, "failed to read the schema creation file")
+		}
+		if _, err := db.Exec(string(b)); err != nil {
 			return errors.Wrapf(err, "failed to create database schema in: %s", dataPath)
 		}
 	}
