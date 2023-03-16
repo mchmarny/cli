@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	// sqlite3 driver
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"

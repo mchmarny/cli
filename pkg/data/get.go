@@ -22,7 +22,7 @@ func Get(id int64) (val *string, err error) {
 	var v string
 	err = row.Scan(&v)
 	if err != nil {
-		if err == sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			log.Debug().Err(err).Msgf("failed to find record for id: %d", id)
 			return nil, nil
 		}

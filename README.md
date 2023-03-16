@@ -2,7 +2,7 @@
 
 Template CLI project including: 
 
-* config - defined by Go struct 
+* config - defined by Go struct
 * data - stored in a sqlite DB
 
 > Both customizable and stored in the user home directory.

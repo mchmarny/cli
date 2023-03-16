@@ -15,7 +15,7 @@ const (
 
 func TestMain(m *testing.M) {
 	os.RemoveAll(testDir)
-	initLogging(name, version)
+	initLogging()
 
 	cfg, err := config.ReadOrCreate(testDir)
 	if err != nil {

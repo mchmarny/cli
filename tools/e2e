@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+msg () {
+   echo "====== running $1 tests ======"
+}
+
+msg "root"
+bin/cli -v
+bin/cli -h

@@ -1,22 +1,43 @@
 project_name: cli
 
+env:
+- GO111MODULE=on
+
 before:
   hooks:
-    - go mod tidy
+  - go mod tidy
+
+gomod:
+  proxy: false
+
+sboms:
+- artifacts: binary
 
 builds:
-  - binary: "{{.ProjectName}}"
-    dir: ./cmd/cli
-    env:
-      - CGO_ENABLED=0
-    flags:
-      - -trimpath
-    ldflags:
-      - -s -w -X main.version={{.Version}}
-    goos:
-      - darwin
-    goarch:
-      - amd64
+- binary: cli
+  mod_timestamp: '{{ .CommitTimestamp }}'
+  dir: ./cmd/cli
+  env:
+  - CGO_ENABLED=0
+  flags:
+  - -trimpath
+  ldflags:
+  - -s -w -X main.version={{.Version}}
+  - -s -w -X main.commit={{.ShortCommit}}
+  - -s -w -X main.date={{.Date}}
+  goos:
+  - linux
+  - darwin
+  - windows
+  goarch:
+  - amd64
+  - arm64
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
 
 release:
   github:
@@ -25,24 +46,46 @@ release:
   prerelease: auto
 
 archives:
-  - format: binary
-    name_template: "{{.ProjectName}}_{{.Version}}_{{.Os}}_{{.Arch}}"
-    replacements:
-      darwin: macOS
-      386: x86
-      amd64: x86_64
-
-checksum:
-  name_template: "checksums-sha256.txt"
-
-snapshot:
-  name_template: "{{.Tag}}-next"
+- format: binary
+  name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+  format_overrides:
+  - goos: windows
+    format: zip
 
 changelog:
   sort: asc
   filters:
     exclude:
-      - "^docs:"
-      - "^test:"
-      - readme
-      - typo
+    - "^docs:"
+    - "^test:"
+    - readme
+    - typo
+    - "version bump"
+
+# brews:
+# - tap:
+#     owner: mchmarny
+#     name: homebrew-cli
+#     token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+#   homepage: "https://github.com/mchmarny/cli"
+#   description: "Vulnerability management tool."
+#   folder: Formula
+#   license: "Apache-2.0"
+#   test: |
+#     system "#{bin}/cli --version"
+
+# nfpms:
+# - file_name_template: "cli-{{.Version}}_{{.Os}}-{{.Arch}}"
+#   homepage: https://github.com/mchmarny/cli
+#   description: "Vulnerability management tool."
+#   maintainer: cli developers <cli@thingz.io>
+#   license: Apache 2.0
+#   vendor: cli developers
+#   formats:
+#   - deb
+#   - rpm
+#   bindir: /usr/bin
+
+universal_binaries:
+- replace: true
+  name_template: 'cli'

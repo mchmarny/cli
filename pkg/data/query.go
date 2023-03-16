@@ -17,7 +17,7 @@ func Query(minID int64) ([]string, error) {
 	}
 
 	rows, err := stmt.Query(minID)
-	if err != nil && err != sql.ErrNoRows {
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
 		return nil, errors.Wrapf(err, "failed to execute select statement")
 	}
 	defer rows.Close()
