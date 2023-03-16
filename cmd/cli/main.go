@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/mchmarny/cli/pkg/config"
-	"github.com/mchmarny/cli/pkg/data"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -86,11 +85,6 @@ func main() {
 
 	cfg, err = config.ReadOrCreate(homeDir)
 	fatalErr(err)
-
-	if err = data.Init(homeDir); err != nil {
-		fatalErr(err)
-	}
-	defer data.Close()
 
 	app := &cli.App{
 		Name:     "twee",
