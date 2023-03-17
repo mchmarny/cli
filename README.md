@@ -36,8 +36,6 @@ git push --all
 
 > The above push will trigger the `on-push` flow. You can navigate to the `/actions` in your repo to see the status of that pipeline. 
 
-![](images/push.png)
-
 ### Trigger release pipeline
 
 The canonical version of the entire repo is stored in [.version](.version) file. Feel free to edit it (by default: `v0.0.1`). When done, trigger the release pipeline:
