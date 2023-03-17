@@ -13,11 +13,7 @@ The repo also includes pipelines to create distributable binaries in multiple OS
 
 ## Repo Usage 
 
-Use this template to create a new repo (click the green button and follow the wizard)
-
-![](images/template.png)
-
-When done, clone your new repo locally, and navigate into it
+Use this template to create a new repo (click the green button and follow the wizard). When done, clone your new repo locally, and navigate into it:
 
 ```shell
 git clone git@github.com:$GIT_HUB_USERNAME/$REPO_NAME.git
