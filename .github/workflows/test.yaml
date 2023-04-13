@@ -35,7 +35,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-go-
     - name: Checkout Code
-      uses: actions/checkout@24cb9080177205b6e8c946b17badbe402adc938f  # v3.4.0
+      uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247  # v3.5.1
     - name: Tidy Modules
       run: |
         make tidy
