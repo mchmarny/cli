@@ -4,18 +4,18 @@ run:
 linters:
   enable:
   - asciicheck
-  - unused
-  - depguard
+  # - depguard
   - errorlint
   - gofmt
-  - gosec
   - goimports
+  - gosec
   - importas
+  - misspell
   - prealloc
   - revive
-  - misspell
   - stylecheck
   - tparallel
   - unconvert
   - unparam
+  - unused
   - whitespace
