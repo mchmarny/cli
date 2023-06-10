@@ -60,7 +60,7 @@ jobs:
       with:
         yamllint_config_filepath: .yamllint
     - name: Scan Repo
-      uses: aquasecurity/trivy-action@1f0aa582c8c8f5f7639610d6d38baddfea4fdcee  # master
+      uses: aquasecurity/trivy-action@b43daad0c3c96202fc5800b511dfae8e6ecce864  # master
       with:
         scan-type: 'fs'
         ignore-unfixed: true
