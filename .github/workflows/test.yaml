@@ -76,7 +76,7 @@ jobs:
       with:
         flags: unittests  # optional
     - name: Upload Report
-      uses: github/codeql-action/upload-sarif@83f0fe6c4988d98a455712a27f0255212bba9bd4  # v2.11.6
+      uses: github/codeql-action/upload-sarif@1813ca74c3faaa3a2da2070b9b8a0b3e7373a0d8  # v2.11.6
       with:
         sarif_file: 'trivy-results.sarif'
     - name: Run Integration Tests
