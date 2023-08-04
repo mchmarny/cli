@@ -8,7 +8,7 @@ require (
 	github.com/stretchr/testify v1.8.4
 	github.com/urfave/cli v1.22.14
 	gopkg.in/yaml.v2 v2.4.0
-	modernc.org/sqlite v1.24.0
+	modernc.org/sqlite v1.25.0
 )
 
 require (
